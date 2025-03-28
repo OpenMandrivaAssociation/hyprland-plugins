@@ -4,7 +4,7 @@
 %global plugins borders-plus-plus csgo-vulkan-fix hyprbars hyprexpo hyprtrails hyprwinwrap xtra-dispatchers
 
 Name:		hyprland-plugins
-Version:	0.48.1
+Version:	0.48.0
 Release:	1
 Group:		System/Libraries
 Summary:	Official plugins for Hyprland
