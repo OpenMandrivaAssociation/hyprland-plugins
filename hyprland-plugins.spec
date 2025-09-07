@@ -13,7 +13,7 @@ URL:		https://github.com/hyprwm/hyprland-plugins
 Source:		%{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  meson
-BuildRequires:  hyprland
+BuildRequires:  pkgconfig(hyprland)
 BuildRequires:  pkgconfig(hyprutils)
 BuildRequires:  pkgconfig(hyprgraphics)
 BuildRequires:	pkgconfig(aquamarine)
