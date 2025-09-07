@@ -4,13 +4,13 @@
 %global plugins borders-plus-plus csgo-vulkan-fix hyprbars hyprexpo hyprtrails hyprwinwrap xtra-dispatchers
 
 Name:		hyprland-plugins
-Version:	0.48.0
+Version:	0.50.0
 Release:	1
 Group:		System/Libraries
 Summary:	Official plugins for Hyprland
 License:	BSD-3-Clause
 URL:		https://github.com/hyprwm/hyprland-plugins
-Source:		%{url}/archive/%{version}/%{name}-%{version}.tar.gz
+Source:		%{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  meson
 BuildRequires:  hyprland
