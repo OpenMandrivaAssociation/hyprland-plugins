@@ -1,0 +1,197 @@
+From 2b68c020238cc9c68640ed12c532ea30ea392aed Mon Sep 17 00:00:00 2001
+From: Vuatech <vuatech@proton.me>
+Date: Tue, 23 Sep 2025 16:33:54 -0400
+Subject: [PATCH 1/8] Fixed clang 21 build issues
+
+---
+ borders-plus-plus/Makefile       | 10 +++++++++-
+ borders-plus-plus/borderDeco.cpp |  4 ++--
+ csgo-vulkan-fix/Makefile         |  9 ++++++++-
+ hyprbars/Makefile                | 11 +++++++++--
+ hyprexpo/Makefile                |  9 ++++++++-
+ hyprfocus/Makefile               |  9 ++++++++-
+ hyprscrolling/Makefile           | 10 +++++++++-
+ hyprtrails/Makefile              |  9 ++++++++-
+ hyprwinwrap/Makefile             |  9 ++++++++-
+ xtra-dispatchers/Makefile        |  9 ++++++++-
+ 10 files changed, 77 insertions(+), 12 deletions(-)
+
+diff --git a/borders-plus-plus/Makefile b/borders-plus-plus/Makefile
+index a04affc3..60e589ee 100644
+--- a/borders-plus-plus/Makefile
++++ b/borders-plus-plus/Makefile
+@@ -1,4 +1,12 @@
++# Else exist specifically for clang
++ifeq ($(CXX),g++)
++    EXTRA_FLAGS = --no-gnu-unique
++else
++    EXTRA_FLAGS =
++endif
++
+ all:
+-	$(CXX) -shared -fPIC --no-gnu-unique main.cpp borderDeco.cpp BorderppPassElement.cpp -o borders-plus-plus.so -g `pkg-config --cflags pixman-1 libdrm hyprland pangocairo libinput libudev wayland-server xkbcommon` -std=c++2b -O2
++	$(CXX) -shared -fPIC $(EXTRA_FLAGS) main.cpp borderDeco.cpp BorderppPassElement.cpp -o borders-plus-plus.so -g `pkg-config --cflags pixman-1 libdrm hyprland pangocairo libinput libudev wayland-server xkbcommon` -std=c++2b -O2
++
+ clean:
+ 	rm ./borders-plus-plus.so
+diff --git a/borders-plus-plus/borderDeco.cpp b/borders-plus-plus/borderDeco.cpp
+index 000e1ad5..6f3d8397 100644
+--- a/borders-plus-plus/borderDeco.cpp
++++ b/borders-plus-plus/borderDeco.cpp
+@@ -138,11 +138,11 @@ void CBordersPlusPlus::drawPass(PHLMONITOR pMonitor, const float& a) {
+         g_pHyprOpenGL->scissor(nullptr);
+ 
+         g_pHyprOpenGL->renderBorder(fullBox, CHyprColor{(uint64_t)**PCOLORS[i]},
+-                                    {.round         = **PNATURALROUND ? ORIGINALROUND : rounding,
++                                    {.round = *PNATURALROUND ? static_cast<int>(ORIGINALROUND) : static_cast<int>(rounding),
+                                      .roundingPower = ROUNDINGPOWER,
+                                      .borderSize    = THISBORDERSIZE,
+                                      .a             = a,
+-                                     .outerRound    = **PNATURALROUND ? ORIGINALROUND : -1});
++                                     .outerRound = *PNATURALROUND ? static_cast<int>(ORIGINALROUND) : -1});
+     }
+ 
+     m_seExtents = {{fullThickness, fullThickness}, {fullThickness, fullThickness}};
+diff --git a/csgo-vulkan-fix/Makefile b/csgo-vulkan-fix/Makefile
+index f9bb88db..c82db604 100644
+--- a/csgo-vulkan-fix/Makefile
++++ b/csgo-vulkan-fix/Makefile
+@@ -1,4 +1,11 @@
++# Else exist specifically for clang
++ifeq ($(CXX),g++)
++    EXTRA_FLAGS = --no-gnu-unique
++else
++    EXTRA_FLAGS =
++endif
++
+ all:
+-	$(CXX) -shared -fPIC --no-gnu-unique main.cpp -o csgo-vulkan-fix.so -g `pkg-config --cflags pixman-1 libdrm hyprland pangocairo libinput libudev wayland-server xkbcommon` -std=c++2b -O2
++	$(CXX) -shared -fPIC $(EXTRA_FLAGS) main.cpp -o csgo-vulkan-fix.so -g `pkg-config --cflags pixman-1 libdrm hyprland pangocairo libinput libudev wayland-server xkbcommon` -std=c++2b -O2
+ clean:
+ 	rm ./csgo-vulkan-fix.so
+diff --git a/hyprbars/Makefile b/hyprbars/Makefile
+index c7a4f612..34a8a7eb 100644
+--- a/hyprbars/Makefile
++++ b/hyprbars/Makefile
+@@ -1,4 +1,11 @@
+-CXXFLAGS = -shared -fPIC --no-gnu-unique -g -std=c++2b -Wno-c++11-narrowing
++# Else exist specifically for clang
++ifeq ($(CXX),g++)
++    EXTRA_FLAGS = --no-gnu-unique
++else
++    EXTRA_FLAGS =
++endif
++
++CXXFLAGS = -shared -fPIC -g -std=c++2b -Wno-c++11-narrowing
+ INCLUDES = `pkg-config --cflags pixman-1 libdrm hyprland pangocairo libinput libudev wayland-server xkbcommon`
+ LIBS = `pkg-config --libs pangocairo`
+ 
+@@ -8,7 +15,7 @@ TARGET = hyprbars.so
+ all: $(TARGET)
+ 
+ $(TARGET): $(SRC)
+-	$(CXX) $(CXXFLAGS) $(INCLUDES) $^ $> -o $@ $(LIBS) -O2
++	$(CXX) $(CXXFLAGS) $(EXTRA_FLAGS) $(INCLUDES) $^ $> -o $@ $(LIBS) -O2
+ 
+ clean:
+ 	rm ./$(TARGET)
+diff --git a/hyprexpo/Makefile b/hyprexpo/Makefile
+index 36598fb4..9cd944cb 100644
+--- a/hyprexpo/Makefile
++++ b/hyprexpo/Makefile
+@@ -1,4 +1,11 @@
++# Else exist specifically for clang
++ifeq ($(CXX),g++)
++    EXTRA_FLAGS = --no-gnu-unique
++else
++    EXTRA_FLAGS =
++endif
++
+ all:
+-	$(CXX) -shared -fPIC --no-gnu-unique main.cpp overview.cpp ExpoGesture.cpp OverviewPassElement.cpp -o hyprexpo.so -g `pkg-config --cflags pixman-1 libdrm hyprland pangocairo libinput libudev wayland-server xkbcommon` -std=c++2b -Wno-narrowing
++	$(CXX) -shared -fPIC $(EXTRA_FLAGS) main.cpp overview.cpp ExpoGesture.cpp OverviewPassElement.cpp -o hyprexpo.so -g `pkg-config --cflags pixman-1 libdrm hyprland pangocairo libinput libudev wayland-server xkbcommon` -std=c++2b -Wno-narrowing
+ clean:
+ 	rm ./hyprexpo.so
+diff --git a/hyprfocus/Makefile b/hyprfocus/Makefile
+index 50cc59e7..ce693085 100644
+--- a/hyprfocus/Makefile
++++ b/hyprfocus/Makefile
+@@ -1,4 +1,11 @@
++# Else exist specifically for clang
++ifeq ($(CXX),g++)
++    EXTRA_FLAGS = --no-gnu-unique
++else
++    EXTRA_FLAGS =
++endif
++
+ all:
+-	$(CXX) -shared -fPIC --no-gnu-unique main.cpp -o hyprfocus.so -g `pkg-config --cflags pixman-1 libdrm hyprland pangocairo libinput libudev wayland-server xkbcommon` -std=c++2b -O2
++	$(CXX) -shared -fPIC $(EXTRA_FLAGS) main.cpp -o hyprfocus.so -g `pkg-config --cflags pixman-1 libdrm hyprland pangocairo libinput libudev wayland-server xkbcommon` -std=c++2b -O2
+ clean:
+ 	rm ./hyprfocus.so
+diff --git a/hyprscrolling/Makefile b/hyprscrolling/Makefile
+index 4285dba0..e8e224c0 100644
+--- a/hyprscrolling/Makefile
++++ b/hyprscrolling/Makefile
+@@ -1,4 +1,12 @@
++# Else exist specifically for clang
++ifeq ($(CXX),g++)
++    EXTRA_FLAGS = --no-gnu-unique
++else
++    EXTRA_FLAGS =
++endif
++
++
+ all:
+-	$(CXX) -shared -fPIC --no-gnu-unique main.cpp Scrolling.cpp -o hyprscrolling.so -g `pkg-config --cflags pixman-1 libdrm hyprland pangocairo libinput libudev wayland-server xkbcommon` -std=c++2b
++	$(CXX) -shared -fPIC $(EXTRA_FLAGS) main.cpp Scrolling.cpp -o hyprscrolling.so -g `pkg-config --cflags pixman-1 libdrm hyprland pangocairo libinput libudev wayland-server xkbcommon` -std=c++2b
+ clean:
+ 	rm ./hyprscrolling.so
+diff --git a/hyprtrails/Makefile b/hyprtrails/Makefile
+index 09f5cbd5..06327c66 100644
+--- a/hyprtrails/Makefile
++++ b/hyprtrails/Makefile
+@@ -1,4 +1,11 @@
++# Else exist specifically for clang
++ifeq ($(CXX),g++)
++    EXTRA_FLAGS = --no-gnu-unique
++else
++    EXTRA_FLAGS =
++endif
++
+ all:
+-	$(CXX) -shared -fPIC --no-gnu-unique main.cpp trail.cpp TrailPassElement.cpp -o hyprtrails.so -g `pkg-config --cflags pixman-1 libdrm hyprland pangocairo libinput libudev wayland-server xkbcommon` -std=c++2b -O2
++	$(CXX) -shared -fPIC $(EXTRA_FLAGS) main.cpp trail.cpp TrailPassElement.cpp -o hyprtrails.so -g `pkg-config --cflags pixman-1 libdrm hyprland pangocairo libinput libudev wayland-server xkbcommon` -std=c++2b -O2
+ clean:
+ 	rm ./hyprtrails.so
+diff --git a/hyprwinwrap/Makefile b/hyprwinwrap/Makefile
+index 83864da8..a8b0e2a1 100644
+--- a/hyprwinwrap/Makefile
++++ b/hyprwinwrap/Makefile
+@@ -1,4 +1,11 @@
++# Else exist specifically for clang
++ifeq ($(CXX),g++)
++    EXTRA_FLAGS = --no-gnu-unique
++else
++    EXTRA_FLAGS =
++endif
++
+ all:
+-	$(CXX) -shared -fPIC --no-gnu-unique main.cpp -o hyprwinwrap.so -g `pkg-config --cflags pixman-1 libdrm hyprland pangocairo libinput libudev wayland-server xkbcommon` -std=c++2b -O2
++	$(CXX) -shared -fPIC $(EXTRA_FLAGS) main.cpp -o hyprwinwrap.so -g `pkg-config --cflags pixman-1 libdrm hyprland pangocairo libinput libudev wayland-server xkbcommon` -std=c++2b -O2
+ clean:
+ 	rm ./hyprwinwrap.so
+diff --git a/xtra-dispatchers/Makefile b/xtra-dispatchers/Makefile
+index 96537fbf..3e8d5c4a 100644
+--- a/xtra-dispatchers/Makefile
++++ b/xtra-dispatchers/Makefile
+@@ -1,4 +1,11 @@
++# Else exist specifically for clang
++ifeq ($(CXX),g++)
++    EXTRA_FLAGS = --no-gnu-unique
++else
++    EXTRA_FLAGS =
++endif
++
+ all:
+-	$(CXX) -shared -fPIC --no-gnu-unique main.cpp -o xtra-dispatch

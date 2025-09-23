@@ -6,6 +6,7 @@
 Name:		hyprland-plugins
 Version:	0.51.0
 Release:	2
+Patch0:		https://github.com/hyprwm/hyprland-plugins/pull/489.patch
 Group:		System/Libraries
 Summary:	Official plugins for Hyprland
 License:	BSD-3-Clause
@@ -40,7 +41,6 @@ Requires:       hyprland-devel
 
 %build
 export CXXFLAGS="%{optflags} -I%{_includedir}/hyprland/"
-export CXX=g++
 for plugin in %{plugins}
 do
 pushd $plugin
