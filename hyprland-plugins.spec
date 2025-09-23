@@ -6,13 +6,13 @@
 Name:		hyprland-plugins
 Version:	0.51.0
 Release:	2
-Patch0:		https://github.com/hyprwm/hyprland-plugins/pull/489.patch
+
 Group:		System/Libraries
 Summary:	Official plugins for Hyprland
 License:	BSD-3-Clause
 URL:		https://github.com/hyprwm/hyprland-plugins
 Source:		%{url}/archive/v%{version}/%{name}-%{version}.tar.gz
-
+Patch0:		https://github.com/hyprwm/hyprland-plugins/pull/489.patch
 BuildRequires:  meson
 BuildRequires:  gcc
 BuildRequires:  cmake
