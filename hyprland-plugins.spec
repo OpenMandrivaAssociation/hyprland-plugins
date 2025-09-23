@@ -13,6 +13,8 @@ URL:		https://github.com/hyprwm/hyprland-plugins
 Source:		%{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  meson
+BuildRequires:  gcc
+BuildRequires:  cmake
 BuildRequires:  pkgconfig(hyprland)
 BuildRequires:  pkgconfig(hyprutils)
 BuildRequires:  pkgconfig(hyprgraphics)
@@ -28,7 +30,7 @@ BuildRequires:  pkgconfig(xcb-icccm)
 BuildRequires:  pkgconfig(hyprlang)
 BuildRequires:  pkgconfig(cairo)
 BuildRequires:  pkgconfig(pangocairo)
-Requires:       hyprland
+Requires:       hyprland-devel
 
 %description
 %{summary}.
@@ -38,6 +40,7 @@ Requires:       hyprland
 
 %build
 export CXXFLAGS="%{optflags} -I%{_includedir}/hyprland/"
+export CXX=g++
 for plugin in %{plugins}
 do
 pushd $plugin
