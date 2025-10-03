@@ -5,7 +5,7 @@
 
 Name:		hyprland-plugins
 Version:	0.51.0
-Release:	2
+Release:	3
 
 Group:		System/Libraries
 Summary:	Official plugins for Hyprland
