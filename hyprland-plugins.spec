@@ -4,19 +4,18 @@
 %global plugins borders-plus-plus csgo-vulkan-fix hyprbars hyprexpo hyprfocus hyprscrolling hyprtrails hyprwinwrap xtra-dispatchers
 
 Name:		hyprland-plugins
-Version:	0.51.0
-Release:	3
+Version:	0.52.0
+Release:	1
 
 Group:		System/Libraries
 Summary:	Official plugins for Hyprland
 License:	BSD-3-Clause
 URL:		https://github.com/hyprwm/hyprland-plugins
 Source:		%{url}/archive/v%{version}/%{name}-%{version}.tar.gz
-Patch0:		https://github.com/hyprwm/hyprland-plugins/pull/489.patch
 BuildRequires:  meson
 BuildRequires:  gcc
 BuildRequires:  cmake
-BuildRequires:  pkgconfig(hyprland)
+BuildRequires:  pkgconfig(hyprland) => %{version}
 BuildRequires:  pkgconfig(hyprutils)
 BuildRequires:  pkgconfig(hyprgraphics)
 BuildRequires:	pkgconfig(aquamarine)
