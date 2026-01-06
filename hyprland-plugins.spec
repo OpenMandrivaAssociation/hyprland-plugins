@@ -4,8 +4,8 @@
 %global plugins borders-plus-plus csgo-vulkan-fix hyprbars hyprexpo hyprfocus hyprscrolling hyprtrails hyprwinwrap xtra-dispatchers
 
 Name:		hyprland-plugins
-Version:	0.52.0
-Release:	2
+Version:	0.53.0
+Release:	1
 
 Group:		System/Libraries
 Summary:	Official plugins for Hyprland
@@ -43,9 +43,8 @@ export CXXFLAGS="%{optflags} -I%{_includedir}/hyprland/"
 for plugin in %{plugins}
 do
 pushd $plugin
-%make_build -v
-# %meson --libdir=%{_libdir}/hyprland
-# %meson_build
+%meson --libdir=%{_libdir}/hyprland
+%meson_build
 popd
 done
 
